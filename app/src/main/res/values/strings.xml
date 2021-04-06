@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">YourDay</string>
+    <string name="float_b_discr">add new note</string>
+    <string name="button_add_note">Добавить</string>
+    <string name="rb_text_note">Заметка</string>
+    <string name="rb_text_buy">Покупки</string>
+    <string name="rb_text_plans">Планы</string>
+</resources>
