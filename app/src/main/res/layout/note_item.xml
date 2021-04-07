@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/note_item_title"
+            style="@style/tvStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:text="Заметка на завтра" />
+
+        <TextView
+            android:id="@+id/note_item_text"
+            style="@style/tvStyle"
+            android:background="@drawable/tv_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="5"
+            android:text="Текст заметки"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -5,4 +5,5 @@
     <string name="rb_text_note">Заметка</string>
     <string name="rb_text_buy">Покупки</string>
     <string name="rb_text_plans">Планы</string>
+    <string name="noteName">Название:</string>
 </resources>
