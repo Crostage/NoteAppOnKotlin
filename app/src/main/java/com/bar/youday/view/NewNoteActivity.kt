@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.bar.youday.R
 import com.bar.youday.data.Note
+import com.bar.youday.viewmodel.NotesViewModel
 import kotlinx.android.synthetic.main.activity_new_note.*
 
 class NewNoteActivity : AppCompatActivity() {
@@ -15,6 +16,7 @@ class NewNoteActivity : AppCompatActivity() {
 
     fun addNote(view: View) {
         val note = newNote()
+        NotesViewModel(application).insertNote(note)
 
     }
 
