@@ -5,21 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".view.MainActivity"
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/l_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_notes"
+        android:id="@+id/recyclerViewNote"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/note_item"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/b_newNote"
+        android:id="@+id/buttonNewNote"
         android:layout_width="wrap_content"
         android:layout_margin="20dp"
         android:layout_height="wrap_content"

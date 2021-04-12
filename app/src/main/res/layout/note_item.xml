@@ -10,29 +10,54 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/note_item_title"
-            style="@style/tvStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:lines="1"
-            android:text="Заметка на завтра" />
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/note_item_text"
-            style="@style/tvStyle"
-            android:background="@drawable/tv_back"
+            <TextView
+                android:id="@+id/itemTitle"
+                style="@style/tvStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="2"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:lines="1"
+                android:text="Заметка на завтра" />
+
+            <TextView
+                android:id="@+id/itemDate"
+                style="@style/tvStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:lines="1"
+                android:text="1 марта 21" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:lines="5"
-            android:text="Текст заметки"
-            android:textSize="12sp"
-            android:textStyle="italic" />
+            android:orientation="horizontal"
+            android:padding="5dp">
 
+            <TextView
+                android:id="@+id/note_item_text"
+                style="@style/tvStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tv_back"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="4"
+                android:text="Текст заметки"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
