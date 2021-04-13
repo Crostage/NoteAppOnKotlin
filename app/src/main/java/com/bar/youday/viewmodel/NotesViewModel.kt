@@ -1,18 +1,22 @@
 package com.bar.youday.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bar.youday.data.Note
-import com.bar.youday.data.NoteDatabase
+import com.bar.youday.data.repository.NotesRepository
+import kotlinx.coroutines.launch
 
-class NotesViewModel : ViewModel() {
+class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
 
-    private val db = NoteDatabase.getInstance(this)
+    val noteList = repository.getNoteList()
 
-    val noteList = db.notesDao().getNoteList() //нужно подписаться
+    fun insert(note:Note) = viewModelScope.launch{repository.insertNote(note)}
 
-    fun insertNote(note: Note) = db.notesDao().addNote(note)
-    fun removeNote(note: Note) = db.notesDao().removeNote(note)
-    fun removeAll() = db.notesDao().removeAllNotes()
+    fun remove(note:Note) = repository.removeNote(note)
+
+    fun delById(id:Int) = repository.deleteNoteById(id)
+
+    fun removeAll() = repository.removeAll()
 
 
 }

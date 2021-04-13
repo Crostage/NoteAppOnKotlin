@@ -45,7 +45,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/note_item_text"
+                android:id="@+id/itemText"
                 style="@style/tvStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -6,11 +6,12 @@ import java.util.*
 
 @Entity(tableName = "all_notes")
 class Note(
+    var title: String = "",
+    var text: String = "",
+    var type: Int = 0,
+    var date: String = Date().toString()
+) {
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    title: String = "",
-    text: String = "",
-    type: Int = 0,
-    date: Date = Date()
-)
+    var id: Int = 0
+}
 
