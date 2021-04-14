@@ -1,13 +1,15 @@
 package com.bar.youday.view
 
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bar.youday.R
 import com.bar.youday.adapter.NoteAdapter
 import com.bar.youday.data.Note
@@ -18,10 +20,13 @@ import com.bar.youday.viewmodel.NotesViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    //todo сделать плвный приятный дизайн по типу как на самсунг
+    //сделать рисайклер вью грид 2
 
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var adapter: NoteAdapter
 
+    private val NEW_NOTE_ACTIVITY = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,19 +35,63 @@ class MainActivity : AppCompatActivity() {
         val dao = NoteDatabase.invoke(this).notesDao()
         val repository = NotesRepositoryImp(dao)
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
-        adapter = NoteAdapter()
+        adapter = NoteAdapter(this)
         recyclerViewNote.adapter = adapter
 
-        notesViewModel.noteList.observe(this, {
-            it.let {
-                adapter.notesList = it
+        getData()
+        onSwipeListener()
+    }
+
+    private fun onSwipeListener() {
+        val itemTouchHelperCallback =
+            object :
+                ItemTouchHelper.SimpleCallback(
+                    0,
+                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: ViewHolder,
+                    target: ViewHolder
+                ): Boolean {
+
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
+                    notesViewModel.remove(adapter.notesList[viewHolder.adapterPosition])
+                    Toast.makeText(
+                        this@MainActivity,
+                        "заметка удалена",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             }
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerViewNote)
+    }
+
+    private fun getData() {
+        notesViewModel.noteList.observe(this, {
+            adapter.notesList = it
             Log.i("adapt", adapter.itemCount.toString())
         })
     }
 
     fun addNote(view: View) {
         val intent = Intent(this, NewNoteActivity::class.java)
-        startActivity(intent);
+        startActivityForResult(intent, NEW_NOTE_ACTIVITY)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == NEW_NOTE_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+                val note = data?.getParcelableExtra<Note>("result")
+                note?.let { notesViewModel.insert(it) }
+            }
+        }
     }
 }

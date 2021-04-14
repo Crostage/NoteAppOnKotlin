@@ -9,14 +9,14 @@ interface NotesDao {
     suspend fun insertNote(note: Note)
 
     @Delete
-    fun removeNote(note: Note)
+    suspend fun removeNote(note: Note)
 
     @Query("DELETE FROM all_notes")
-    fun removeAllNotes()
+    suspend fun removeAllNotes()
 
-    @Query("SELECT*FROM all_notes ORDER BY id ")
+    @Query("SELECT*FROM all_notes ORDER BY id DESC ")
     fun getNoteList(): LiveData<List<Note>>
 
     @Query("DELETE FROM all_notes WHERE id = :id")
-    fun deleteNoteById(id: Int)
+    suspend fun deleteNoteById(id: Int)
 }

@@ -14,15 +14,16 @@ class NotesRepositoryImp( private val notesDao: NotesDao):NotesRepository {
       notesDao.insertNote(note)
     }
 
-    override  fun removeNote(note: Note) {
+    override suspend  fun removeNote(note: Note) {
         notesDao.removeNote(note)
     }
 
-    override  fun removeAll() {
+    override  suspend fun removeAll() {
         notesDao.removeAllNotes()
     }
 
-    override  fun deleteNoteById(id: Int) {
+    override suspend fun deleteNoteById(id: Int) {
         notesDao.deleteNoteById(id)
     }
+
 }

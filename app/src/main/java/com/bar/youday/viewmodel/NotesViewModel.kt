@@ -12,11 +12,11 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
 
     fun insert(note:Note) = viewModelScope.launch{repository.insertNote(note)}
 
-    fun remove(note:Note) = repository.removeNote(note)
+    fun remove(note:Note) = viewModelScope.launch{repository.removeNote(note)}
 
-    fun delById(id:Int) = repository.deleteNoteById(id)
+    fun delById(id:Int) = viewModelScope.launch{repository.deleteNoteById(id)}
 
-    fun removeAll() = repository.removeAll()
+    fun removeAll() = viewModelScope.launch{repository.removeAll()}
 
 
 }

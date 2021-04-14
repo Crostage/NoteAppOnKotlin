@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"    android:orientation="vertical"
     tools:context=".view.MainActivity">
 
     <FrameLayout
@@ -15,7 +14,7 @@
             android:id="@+id/recyclerViewNote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/note_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,7 +24,8 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="20dp"
             android:contentDescription="@string/float_b_discr"
-            android:onClick="addNote" />
+            android:onClick="addNote"
+            android:src="@android:drawable/ic_input_add" />
 
     </FrameLayout>
 
