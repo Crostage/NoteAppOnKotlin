@@ -9,10 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bar.youday.R
 import com.bar.youday.data.Note
 
-class NoteAdapter(private val notesList: List<Note>) : RecyclerView.Adapter<NoteViewHolder>() {
+class NoteAdapter() : RecyclerView.Adapter<NoteViewHolder>() {
+
+    var notesList: List<Note> = listOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent, false)
         return NoteViewHolder(view)
     }
 
@@ -42,6 +48,6 @@ class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(note: Note) {
         itemTitle?.text = note.title
         itemText?.text = note.text
-        Log.i("bind","1")
+        Log.i("bind", "1")
     }
 }

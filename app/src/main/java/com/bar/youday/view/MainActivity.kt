@@ -15,11 +15,11 @@ import com.bar.youday.data.NoteDatabase
 import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.viewmodel.NotesViewModel
 import com.bar.youday.viewmodel.NotesViewModelFactory
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var notesViewModel: NotesViewModel
-    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NoteAdapter
 
 
@@ -30,19 +30,14 @@ class MainActivity : AppCompatActivity() {
         val dao = NoteDatabase.invoke(this).notesDao()
         val repository = NotesRepositoryImp(dao)
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
-
-        adapter = NoteAdapter(mutableListOf())
-        recyclerView = findViewById(R.id.recyclerViewNote)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        recyclerView.adapter = adapter
+        adapter = NoteAdapter()
+        recyclerViewNote.adapter = adapter
 
         notesViewModel.noteList.observe(this, {
             it.let {
-                adapter = NoteAdapter(it)
+                adapter.notesList = it
             }
-                adapter.notifyDataSetChanged()
-                Log.i("adapt",adapter.itemCount.toString())
+            Log.i("adapt", adapter.itemCount.toString())
         })
     }
 
