@@ -25,7 +25,7 @@
                 android:layout_weight="2"
                 android:ellipsize="end"
                 android:gravity="start"
-                android:lines="2"
+                android:maxLines="2"
                 android:text="Заметка на завтра" />
 
             <TextView
@@ -51,8 +51,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/tv_back"
                 android:ellipsize="end"
-                android:gravity="center"
-                android:lines="4"
+                android:gravity="start"
+                android:maxLines="4"
                 android:text="Текст заметки"
                 android:textSize="12sp"
                 android:textStyle="italic" />

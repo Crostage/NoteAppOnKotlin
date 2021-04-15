@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:id="@+id/first"
+        android:icon="@drawable/notes"
         android:title="Заметки"/>
 
     <item android:id="@+id/sec"
+        android:icon="@drawable/shopping"
         android:title="Покупки"/>
 
     <item android:id="@+id/thr"
+        android:icon="@drawable/pencil"
         android:title="Дела"/>
-
-
 
 </menu>

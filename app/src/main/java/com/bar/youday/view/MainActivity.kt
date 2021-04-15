@@ -5,11 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.GridLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bar.youday.R
 import com.bar.youday.adapter.NoteAdapter
 import com.bar.youday.data.Note
@@ -21,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     //todo сделать плвный приятный дизайн по типу как на самсунг
-    //сделать рисайклер вью грид 2
 
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var adapter: NoteAdapter
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val repository = NotesRepositoryImp(dao)
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
         adapter = NoteAdapter(this)
+        recyclerViewNote.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
         recyclerViewNote.adapter = adapter
 
         getData()
