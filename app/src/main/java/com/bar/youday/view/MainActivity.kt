@@ -7,12 +7,15 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bar.youday.R
+import com.bar.youday.R.color
+import com.bar.youday.R.color.*
 import com.bar.youday.adapter.NoteAdapter
 import com.bar.youday.data.Note
 import com.bar.youday.data.NoteDatabase
@@ -21,7 +24,6 @@ import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.viewmodel.NotesViewModel
 import com.bar.youday.viewmodel.NotesViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 interface OnItemClick {
     fun onClick(note: Note)
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnItemClick {
     private lateinit var adapter: NoteAdapter
     private lateinit var repository: NotesRepositoryImp
 
-    private val NEW_NOTE_ACTIVITY = 1
+    private val RESULT = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity(), OnItemClick {
         Log.i("resume", "create")
 
 
-
+        navigation.itemIconTintList = null
         navigation.setOnNavigationItemSelectedListener { item ->
             var newList: List<Note>? = null
 
@@ -111,32 +113,48 @@ class MainActivity : AppCompatActivity(), OnItemClick {
     }
 
     private fun getData() {
-        notesViewModel.noteList.observe(this, {
-            adapter.notesList = it
+        //todo depricated
+        notesViewModel.noteList.observe(this) {
+
+            var newList: List<Note>? = null
+
+
+            val i = when (navigation.selectedItemId) {
+                R.id.notes -> 0
+                R.id.shop -> 1
+                R.id.plans -> 2
+                else -> 3
+            }
+        //todo переделать в 1 метод, дублирование кода
+            newList = if (i != 3)
+                notesViewModel.noteList.value?.filter { note -> note.type == i }
+            else
+                notesViewModel.noteList.value
+
+
+            if (newList != null) {
+                adapter.notesList = newList
+            }
+
             Log.i("resume", adapter.itemCount.toString())
-        })
+        }
     }
 
-
-    private fun obs(int: Int) {
-
-
-    }
 
     fun addNote(view: View) {
         val intent = Intent(this, NewNoteActivity::class.java)
-        startActivityForResult(intent, NEW_NOTE_ACTIVITY)
+        startActivityForResult(intent, RESULT)
     }
 
     override fun onClick(note: Note) {
         val intent = Intent(this, DetailNoteActivity::class.java)
         intent.putExtra("note", note)
-        startActivityForResult(intent, NEW_NOTE_ACTIVITY)
+        startActivityForResult(intent, RESULT)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == NEW_NOTE_ACTIVITY) {
+        if (requestCode == RESULT) {
             if (resultCode == Activity.RESULT_OK) {
                 val note = data?.getParcelableExtra<Note>("result")
                 note?.let { notesViewModel.insert(it) }
