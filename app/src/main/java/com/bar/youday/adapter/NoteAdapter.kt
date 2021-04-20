@@ -2,15 +2,16 @@ package com.bar.youday.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bar.youday.R
 import com.bar.youday.data.Note
-import com.bar.youday.view.DetailNoteActivity
 import com.bar.youday.view.OnItemClick
 
 
@@ -45,16 +46,24 @@ class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var itemTitle: TextView? = null
     private var itemText: TextView? = null
     private var itemDate: TextView? = null
+    private var itemImg: ImageView? = null
 
     init {
         itemTitle = itemView.findViewById(R.id.itemTitle)
         itemText = itemView.findViewById(R.id.itemText)
         itemDate = itemView.findViewById(R.id.itemDate)
+        itemImg = itemView.findViewById(R.id.itemImg)
     }
 
     fun bind(note: Note) {
         itemTitle?.text = note.title
         itemText?.text = note.text
         itemDate?.text = note.date
+
+        when(note.type){
+            1-> itemImg?.setImageResource(R.drawable.shopping)
+            2-> itemImg?.setImageResource(R.drawable.pencil)
+            else -> itemImg?.setImageResource(R.drawable.notes)
+        }
     }
 }

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/first"
+    <item android:id="@+id/all"
+        android:icon="@drawable/border"
+        android:title="Все"/>
+
+    <item android:id="@+id/notes"
         android:icon="@drawable/notes"
         android:title="Заметки"/>
 
-    <item android:id="@+id/sec"
+    <item android:id="@+id/shop"
         android:icon="@drawable/shopping"
         android:title="Покупки"/>
 
-    <item android:id="@+id/thr"
+    <item android:id="@+id/plans"
         android:icon="@drawable/pencil"
         android:title="Дела"/>
 

@@ -5,10 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.GridLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
@@ -23,6 +21,7 @@ import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.viewmodel.NotesViewModel
 import com.bar.youday.viewmodel.NotesViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 interface OnItemClick {
     fun onClick(note: Note)
@@ -52,6 +51,32 @@ class MainActivity : AppCompatActivity(), OnItemClick {
         getData()
         onSwipeListener()
         Log.i("resume", "create")
+
+
+
+        navigation.setOnNavigationItemSelectedListener { item ->
+            var newList: List<Note>? = null
+
+            val i = when (item.itemId) {
+                R.id.notes -> 0
+                R.id.shop -> 1
+                R.id.plans -> 2
+                else -> 3
+            }
+
+            newList = if (i != 3)
+                notesViewModel.noteList.value?.filter { note -> note.type == i }
+            else
+                notesViewModel.noteList.value
+
+
+            if (newList != null) {
+                adapter.notesList = newList
+            }
+
+            true
+        }
+
     }
 
     private fun onSwipeListener() {
@@ -92,15 +117,15 @@ class MainActivity : AppCompatActivity(), OnItemClick {
         })
     }
 
+
+    private fun obs(int: Int) {
+
+
+    }
+
     fun addNote(view: View) {
         val intent = Intent(this, NewNoteActivity::class.java)
         startActivityForResult(intent, NEW_NOTE_ACTIVITY)
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("resume", "resume")
     }
 
     override fun onClick(note: Note) {

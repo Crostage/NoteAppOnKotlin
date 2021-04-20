@@ -10,7 +10,7 @@ class NoteHelper {
 
     companion object {
         fun convertDate(date: Date): String {
-            val newFormat = SimpleDateFormat("dd MMM yy \n hh:mm", Locale.ENGLISH)
+            val newFormat = SimpleDateFormat("dd MMM yy hh:mm", Locale.ENGLISH)
             return newFormat.format(date)
         }
     }
