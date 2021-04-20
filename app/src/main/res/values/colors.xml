@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="mainTextColor">#FF000000</color>
+    <color name="buttonAddColor">#03A9F4</color>
 </resources>

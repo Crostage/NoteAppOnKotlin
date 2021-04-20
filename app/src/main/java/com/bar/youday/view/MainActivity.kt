@@ -18,16 +18,23 @@ import com.bar.youday.R
 import com.bar.youday.adapter.NoteAdapter
 import com.bar.youday.data.Note
 import com.bar.youday.data.NoteDatabase
+import com.bar.youday.data.NotesDao
 import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.viewmodel.NotesViewModel
 import com.bar.youday.viewmodel.NotesViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+interface OnItemClick {
+    fun onClick(note: Note)
+}
+
+class MainActivity : AppCompatActivity(), OnItemClick {
     //todo сделать плвный приятный дизайн по типу как на самсунг
 
+    private lateinit var dao: NotesDao
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var adapter: NoteAdapter
+    private lateinit var repository: NotesRepositoryImp
 
     private val NEW_NOTE_ACTIVITY = 1
 
@@ -35,15 +42,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val dao = NoteDatabase.invoke(this).notesDao()
-        val repository = NotesRepositoryImp(dao)
+        dao = NoteDatabase.invoke(this).notesDao()
+        repository = NotesRepositoryImp(dao)
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
-        adapter = NoteAdapter(this)
+        adapter = NoteAdapter(this, this)
         recyclerViewNote.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
         recyclerViewNote.adapter = adapter
 
         getData()
         onSwipeListener()
+        Log.i("resume", "create")
     }
 
     private fun onSwipeListener() {
@@ -80,12 +88,24 @@ class MainActivity : AppCompatActivity() {
     private fun getData() {
         notesViewModel.noteList.observe(this, {
             adapter.notesList = it
-            Log.i("adapt", adapter.itemCount.toString())
+            Log.i("resume", adapter.itemCount.toString())
         })
     }
 
     fun addNote(view: View) {
         val intent = Intent(this, NewNoteActivity::class.java)
+        startActivityForResult(intent, NEW_NOTE_ACTIVITY)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("resume", "resume")
+    }
+
+    override fun onClick(note: Note) {
+        val intent = Intent(this, DetailNoteActivity::class.java)
+        intent.putExtra("note", note)
         startActivityForResult(intent, NEW_NOTE_ACTIVITY)
     }
 

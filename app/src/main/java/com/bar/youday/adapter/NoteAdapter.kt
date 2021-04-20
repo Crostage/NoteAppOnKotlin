@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bar.youday.R
 import com.bar.youday.data.Note
 import com.bar.youday.view.DetailNoteActivity
+import com.bar.youday.view.OnItemClick
 
-class NoteAdapter(private val context: Context) : RecyclerView.Adapter<NoteViewHolder>() {
+
+class NoteAdapter(private val context: Context, private val callback: OnItemClick) : RecyclerView.Adapter<NoteViewHolder>() {
 
     var notesList: List<Note> = listOf()
         set(value) {
@@ -30,10 +32,7 @@ class NoteAdapter(private val context: Context) : RecyclerView.Adapter<NoteViewH
         val note = notesList[position]
         holder.bind(note)
         holder.itemView.setOnClickListener {
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context, DetailNoteActivity::class.java)
-            intent.putExtra("note",note)
-            context.startActivity(intent)
+            callback.onClick(note)
         }
     }
 

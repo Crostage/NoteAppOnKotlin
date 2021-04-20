@@ -76,5 +76,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-        android:onClick="addNote"/>
+        android:background="@drawable/custom_button"
+        android:onClick="addNote"
+        android:textSize="@dimen/textM"
+        android:textAllCaps="false"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
