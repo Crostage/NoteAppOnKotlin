@@ -2,20 +2,21 @@ package com.bar.youday.view
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.observe
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bar.youday.R
-import com.bar.youday.R.color
-import com.bar.youday.R.color.*
 import com.bar.youday.adapter.NoteAdapter
 import com.bar.youday.data.Note
 import com.bar.youday.data.NoteDatabase
@@ -23,6 +24,7 @@ import com.bar.youday.data.NotesDao
 import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.viewmodel.NotesViewModel
 import com.bar.youday.viewmodel.NotesViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 interface OnItemClick {
@@ -36,6 +38,11 @@ class MainActivity : AppCompatActivity(), OnItemClick {
     private lateinit var notesViewModel: NotesViewModel
     private lateinit var adapter: NoteAdapter
     private lateinit var repository: NotesRepositoryImp
+    private lateinit var deleteIcon: Drawable
+    private var swipeBackground: ColorDrawable = ColorDrawable(
+        Color
+            .parseColor("#FF0000")
+    )
 
     private val RESULT = 1
 
@@ -43,6 +50,7 @@ class MainActivity : AppCompatActivity(), OnItemClick {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete)!!
         dao = NoteDatabase.invoke(this).notesDao()
         repository = NotesRepositoryImp(dao)
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
@@ -57,24 +65,7 @@ class MainActivity : AppCompatActivity(), OnItemClick {
 
         navigation.itemIconTintList = null
         navigation.setOnNavigationItemSelectedListener { item ->
-            var newList: List<Note>? = null
-
-            val i = when (item.itemId) {
-                R.id.notes -> 0
-                R.id.shop -> 1
-                R.id.plans -> 2
-                else -> 3
-            }
-
-            newList = if (i != 3)
-                notesViewModel.noteList.value?.filter { note -> note.type == i }
-            else
-                notesViewModel.noteList.value
-
-
-            if (newList != null) {
-                adapter.notesList = newList
-            }
+            typeChoice(item.itemId)
 
             true
         }
@@ -98,14 +89,71 @@ class MainActivity : AppCompatActivity(), OnItemClick {
                 }
 
                 override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-                    notesViewModel.remove(adapter.notesList[viewHolder.adapterPosition])
-                    Toast.makeText(
-                        this@MainActivity,
-                        "заметка удалена",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val note = adapter.notesList[viewHolder.adapterPosition]
+                    notesViewModel.remove(note)
+
+                    Snackbar.make(
+                        viewHolder.itemView,
+                        "${note.title} удалена",
+                        Snackbar.LENGTH_SHORT
+                    ).setAction("Undo") {
+                        notesViewModel.insert(note)
+                    }.show()
                 }
 
+                override fun onChildDraw(
+                    c: Canvas,
+                    recyclerView: RecyclerView,
+                    viewHolder: ViewHolder,
+                    dX: Float,
+                    dY: Float,
+                    actionState: Int,
+                    isCurrentlyActive: Boolean
+                ) {
+
+                    val itemView = viewHolder.itemView
+
+                    val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
+
+                    if (dX > 0) {
+                        swipeBackground
+                            .setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                        deleteIcon.setBounds(
+                            itemView.left + iconMargin/4,
+                            itemView.top + iconMargin,
+                            itemView.left + iconMargin/4 + deleteIcon.intrinsicWidth,
+                            itemView.bottom - iconMargin
+                        )
+
+                    } else {
+                        swipeBackground
+                            .setBounds(
+                                itemView.right + dX.toInt(),
+                                itemView.top,
+                                itemView.right,
+                                itemView.bottom
+                            )
+                        deleteIcon.setBounds(
+                            itemView.right - iconMargin/4 - deleteIcon.intrinsicWidth,
+                            itemView.top + iconMargin,
+                            itemView.right - iconMargin/4,
+                            itemView.bottom - iconMargin
+                        )
+                    }
+
+                    swipeBackground.draw(c)
+                    deleteIcon.draw(c)
+
+                    super.onChildDraw(
+                        c,
+                        recyclerView,
+                        viewHolder,
+                        dX,
+                        dY,
+                        actionState,
+                        isCurrentlyActive
+                    )
+                }
             }
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
@@ -113,30 +161,30 @@ class MainActivity : AppCompatActivity(), OnItemClick {
     }
 
     private fun getData() {
-        //todo depricated
-        notesViewModel.noteList.observe(this) {
-
-            var newList: List<Note>? = null
-
-
-            val i = when (navigation.selectedItemId) {
-                R.id.notes -> 0
-                R.id.shop -> 1
-                R.id.plans -> 2
-                else -> 3
-            }
-        //todo переделать в 1 метод, дублирование кода
-            newList = if (i != 3)
-                notesViewModel.noteList.value?.filter { note -> note.type == i }
-            else
-                notesViewModel.noteList.value
-
-
-            if (newList != null) {
-                adapter.notesList = newList
-            }
-
+        notesViewModel.noteList.observe(this, {
+            typeChoice(navigation.selectedItemId)
             Log.i("resume", adapter.itemCount.toString())
+        })
+    }
+
+    fun typeChoice(type: Int) {
+        var newList: List<Note>? = null
+
+        val i = when (type) {
+            R.id.notes -> 0
+            R.id.shop -> 1
+            R.id.plans -> 2
+            else -> 3
+        }
+
+        newList = if (i != 3)
+            notesViewModel.noteList.value?.filter { note -> note.type == i }
+        else
+            notesViewModel.noteList.value
+
+
+        if (newList != null) {
+            adapter.notesList = newList
         }
     }
 
