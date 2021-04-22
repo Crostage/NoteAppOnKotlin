@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/pointTool"
+        android:icon="@drawable/ic_point"
+        android:title="Point"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/clipTool"
+        android:icon="@drawable/ic_paperclip"
+        android:title="Вложить"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/saveButton"
+        android:icon="@drawable/save"
+        android:title="Сохранить"
+        app:showAsAction="always"/>
+</menu>
