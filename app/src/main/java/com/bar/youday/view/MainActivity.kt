@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), OnItemClick {
     private lateinit var adapter: NoteAdapter
     private lateinit var repository: NotesRepositoryImp
     private lateinit var deleteIcon: Drawable
+    private lateinit var toast: Toast
     private var swipeBackground: ColorDrawable = ColorDrawable(
         Color
             .parseColor("#FF0000")
@@ -61,7 +63,6 @@ class MainActivity : AppCompatActivity(), OnItemClick {
         getData()
         onSwipeListener()
         Log.i("resume", "create")
-
 
         navigation.itemIconTintList = null
         navigation.setOnNavigationItemSelectedListener { item ->
@@ -159,6 +160,10 @@ class MainActivity : AppCompatActivity(), OnItemClick {
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerViewNote)
     }
+
+
+
+
 
     private fun getData() {
         notesViewModel.noteList.observe(this, {

@@ -7,7 +7,6 @@
     tools:context=".view.NewNoteActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:background="@color/purple_700"
         android:id="@+id/newNoteBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,6 +28,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newNoteBar"/>
+
+    <ImageView
+        android:id="@+id/noteImg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/textNote"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <EditText
         android:id="@+id/textNote"

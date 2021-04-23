@@ -1,6 +1,8 @@
 package com.bar.youday.view
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -109,6 +111,17 @@ class NewNoteActivity : AppCompatActivity() {
             else -> 0
         }
         return Note(title, text, radio)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK) {
+            val uri = data?.data
+           val impStr = uri?.let { contentResolver.openInputStream(it) }
+
+            val imageBitmap = BitmapFactory.decodeStream(impStr)
+            noteImg.setImageBitmap(imageBitmap)
+        }
     }
 
 }
