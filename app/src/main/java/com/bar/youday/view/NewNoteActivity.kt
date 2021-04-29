@@ -43,7 +43,7 @@ class NewNoteActivity : AppCompatActivity() {
                 titleNote.setText(it.title)
                 textNote.setText(it.text)
 
-                imageByteArray?.let {
+                it.image?.let {
                     val image = BitmapFactory.decodeByteArray(it, 0, it.size)
 
                     noteImg.setImageBitmap(image)
