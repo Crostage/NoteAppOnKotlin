@@ -2,6 +2,7 @@ package com.bar.youday.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.bar.youday.helper.NoteHelper
@@ -12,7 +13,8 @@ data class Note(
     var title: String = "",
     var text: String = "",
     var type: Int = 0,
-    val image: String = "",
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    var image: ByteArray? = null,
     var date: String = NoteHelper.convertDate(Date())
 ) : Parcelable {
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +24,7 @@ data class Note(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readInt(),
-        parcel.readString().toString(),
+        parcel.createByteArray(),
         parcel.readString().toString()
     ) {
         id = parcel.readInt()
@@ -32,7 +34,7 @@ data class Note(
         parcel.writeString(title)
         parcel.writeString(text)
         parcel.writeInt(type)
-        parcel.writeString(image)
+        parcel.writeByteArray(image)
         parcel.writeString(date)
         parcel.writeInt(id)
     }
@@ -50,10 +52,6 @@ data class Note(
             return arrayOfNulls(size)
         }
     }
-
-
-
-
 
 
 }

@@ -25,7 +25,7 @@ class NewNoteActivity : AppCompatActivity() {
     private val RESULT_LOAD_IMG = 1
     private lateinit var notesViewModel: NotesViewModel
     private var pointFlag = false
-    lateinit var imageBitmap: Bitmap
+    var imageByteArray: ByteArray? = null
     var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +43,11 @@ class NewNoteActivity : AppCompatActivity() {
                 titleNote.setText(it.title)
                 textNote.setText(it.text)
 
-                val imageBytes = Base64.decode(it.image, 0)
-                val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                imageByteArray?.let {
+                    val image = BitmapFactory.decodeByteArray(it, 0, it.size)
 
-//                imageBitmap = image
-//                imageBitmap.let { noteImg.setImageBitmap(it) }
+                    noteImg.setImageBitmap(image)
+                }
                 val type = when (it.type) {
                     1 -> R.id.radioBuy
                     2 -> R.id.radioPlans
@@ -136,13 +136,16 @@ class NewNoteActivity : AppCompatActivity() {
             R.id.radioPlans -> 2
             else -> 0
         }
-//        imageBitmap.let {
-//            return Note(title, text, radio, bitMapToString(it!!))
-//        }
-        var newNote = Note(title, text, radio)
-        note?.let {
-            newNote = Note(title, text, radio, date = it.date)
-            newNote.id = it.id
+
+        val newNote = Note(title, text, radio)
+
+        note?.let { n ->
+
+            newNote.id = n.id
+        }
+
+        imageByteArray?.let {
+            newNote.image = it
         }
         return newNote
     }
@@ -153,18 +156,14 @@ class NewNoteActivity : AppCompatActivity() {
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK) {
             val uri = data?.data
             val impStr = uri?.let { contentResolver.openInputStream(it) }
+            val stream = ByteArrayOutputStream()
+            val imageBitmap = BitmapFactory.decodeStream(impStr)
 
-            imageBitmap = BitmapFactory.decodeStream(impStr)
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            imageByteArray = stream.toByteArray()
             noteImg.setImageBitmap(imageBitmap)
         }
     }
 
-
-    fun bitMapToString(bitmap: Bitmap): String {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val b = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
-    }
 
 }
