@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -16,6 +17,7 @@ import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.viewmodel.NotesViewModel
 import com.bar.youday.viewmodel.NotesViewModelFactory
 import kotlinx.android.synthetic.main.activity_new_note.*
+import java.io.ByteArrayOutputStream
 
 
 class NewNoteActivity : AppCompatActivity() {
@@ -23,6 +25,8 @@ class NewNoteActivity : AppCompatActivity() {
     private val RESULT_LOAD_IMG = 1
     private lateinit var notesViewModel: NotesViewModel
     private var pointFlag = false
+    lateinit var imageBitmap: Bitmap
+    var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,28 @@ class NewNoteActivity : AppCompatActivity() {
 
         newNoteBar.title = ""
         setSupportActionBar(findViewById(R.id.newNoteBar))
+
+
+        if (intent.hasExtra("note")) {
+            note = intent.getParcelableExtra<Note>(("note"))!!
+            note?.let {
+                titleNote.setText(it.title)
+                textNote.setText(it.text)
+
+                val imageBytes = Base64.decode(it.image, 0)
+                val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+//                imageBitmap = image
+//                imageBitmap.let { noteImg.setImageBitmap(it) }
+                val type = when (it.type) {
+                    1 -> R.id.radioBuy
+                    2 -> R.id.radioPlans
+                    else -> R.id.radioNotes
+                }
+                radioGroup.check(type)
+            }
+
+        }
 
         val dao = NoteDatabase.invoke(this).notesDao()
         val repository = NotesRepositoryImp(dao)
@@ -88,15 +114,15 @@ class NewNoteActivity : AppCompatActivity() {
     }
 
     private fun addNote() {
-        val note = newNote()
+        val note1 = newNote()
 
-        if (note.title.isEmpty() || note.text.isEmpty()) {
+        if (note1.title.isEmpty() || note1.text.isEmpty()) {
             Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
             return
         }
 
         val returnIntent = Intent()
-        returnIntent.putExtra("result", note)
+        returnIntent.putExtra("result", note1)
         setResult(RESULT_OK, returnIntent)
         finish()
     }
@@ -110,18 +136,35 @@ class NewNoteActivity : AppCompatActivity() {
             R.id.radioPlans -> 2
             else -> 0
         }
-        return Note(title, text, radio)
+//        imageBitmap.let {
+//            return Note(title, text, radio, bitMapToString(it!!))
+//        }
+        var newNote = Note(title, text, radio)
+        note?.let {
+            newNote = Note(title, text, radio, date = it.date)
+            newNote.id = it.id
+        }
+        return newNote
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK) {
             val uri = data?.data
-           val impStr = uri?.let { contentResolver.openInputStream(it) }
+            val impStr = uri?.let { contentResolver.openInputStream(it) }
 
-            val imageBitmap = BitmapFactory.decodeStream(impStr)
+            imageBitmap = BitmapFactory.decodeStream(impStr)
             noteImg.setImageBitmap(imageBitmap)
         }
+    }
+
+
+    fun bitMapToString(bitmap: Bitmap): String {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
     }
 
 }

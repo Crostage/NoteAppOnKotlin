@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity(), OnItemClick {
     }
 
     override fun onClick(note: Note) {
-        val intent = Intent(this, DetailNoteActivity::class.java)
+        val intent = Intent(this, NewNoteActivity::class.java)
         intent.putExtra("note", note)
         startActivityForResult(intent, RESULT)
     }

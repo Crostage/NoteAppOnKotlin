@@ -12,8 +12,9 @@ data class Note(
     var title: String = "",
     var text: String = "",
     var type: Int = 0,
+    val image: String = "",
     var date: String = NoteHelper.convertDate(Date())
-) :Parcelable{
+) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 
@@ -21,6 +22,7 @@ data class Note(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readInt(),
+        parcel.readString().toString(),
         parcel.readString().toString()
     ) {
         id = parcel.readInt()
@@ -30,6 +32,7 @@ data class Note(
         parcel.writeString(title)
         parcel.writeString(text)
         parcel.writeInt(type)
+        parcel.writeString(image)
         parcel.writeString(date)
         parcel.writeInt(id)
     }
@@ -47,6 +50,11 @@ data class Note(
             return arrayOfNulls(size)
         }
     }
+
+
+
+
+
 
 }
 
