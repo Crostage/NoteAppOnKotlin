@@ -23,18 +23,21 @@
         android:lines="1"
         android:ellipsize="end"
         android:padding="10dp"
-        android:hint="Введите заголовок"
+        android:hint="@string/hint_note_title"
         android:gravity="bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newNoteBar"/>
+        app:layout_constraintTop_toBottomOf="@+id/newNoteBar"
+        android:inputType="none"
+        android:importantForAutofill="no" />
 
     <ImageView
         android:id="@+id/noteImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/textNote"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        android:contentDescription="@string/iv_discription" />
 
     <EditText
         android:id="@+id/textNote"
@@ -42,12 +45,14 @@
         android:layout_height="0dp"
         android:gravity="top"
         android:lines="20"
-        android:hint="Введите текст"
+        android:hint="@string/hint_text_note"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/noteImg" />
+        app:layout_constraintTop_toBottomOf="@id/noteImg"
+        android:inputType="none"
+        android:importantForAutofill="no" />
 
 
     <RadioGroup

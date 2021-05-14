@@ -1,23 +1,26 @@
 package com.bar.youday.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bar.youday.R
 import com.bar.youday.data.Note
+import com.bar.youday.helper.NoteDiffUtil
 import com.bar.youday.view.OnItemClick
 
 
-class NoteAdapter(private val context: Context, private val callback: OnItemClick) : RecyclerView.Adapter<NoteViewHolder>() {
+class NoteAdapter(private val callback: OnItemClick) : RecyclerView.Adapter<NoteViewHolder>() {
 
     var notesList: List<Note> = listOf()
         set(value) {
+            val diffUtil = NoteDiffUtil(field, value)
+            val diffResult = DiffUtil.calculateDiff(diffUtil)
             field = value
-            notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(this)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
@@ -57,9 +60,9 @@ class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemText?.text = note.text
         itemDate?.text = note.date
 
-        when(note.type){
-            1-> itemImg?.setImageResource(R.drawable.shopping)
-            2-> itemImg?.setImageResource(R.drawable.pencil)
+        when (note.type) {
+            1 -> itemImg?.setImageResource(R.drawable.shopping)
+            2 -> itemImg?.setImageResource(R.drawable.pencil)
             else -> itemImg?.setImageResource(R.drawable.notes)
         }
     }

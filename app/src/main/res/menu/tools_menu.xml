@@ -5,18 +5,18 @@
     <item
         android:id="@+id/pointTool"
         android:icon="@drawable/ic_point"
-        android:title="Point"
+        android:title="@string/tools_menu_point"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/clipTool"
         android:icon="@drawable/ic_paperclip"
-        android:title="Вложить"
+        android:title="@string/tools_menu_attach"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/saveButton"
         android:icon="@drawable/save"
-        android:title="Сохранить"
+        android:title="@string/tools_menu_save"
         app:showAsAction="always"/>
 </menu>

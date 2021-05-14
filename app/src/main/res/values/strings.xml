@@ -6,4 +6,14 @@
     <string name="rb_text_buy">Покупки</string>
     <string name="rb_text_plans">Дела</string>
     <string name="noteName">Название:</string>
+    <string name="Toast_attention_message">Заполните все поля</string>
+    <string name="hint_note_title">Введите заголовок</string>
+    <string name="hint_text_note">Введите текст</string>
+    <string name="iv_discription">Users img from gallery</string>
+    <string name="menu_title_edit">Edit</string>
+    <string name="menu_title_save">Save</string>
+    <string name="bnv_all">Все</string>
+    <string name="tools_menu_point">Point</string>
+    <string name="tools_menu_attach">Вложить</string>
+    <string name="tools_menu_save">Сохранить</string>
 </resources>

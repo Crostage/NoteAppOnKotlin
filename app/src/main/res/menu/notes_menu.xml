@@ -3,7 +3,7 @@
 
     <item android:id="@+id/all"
         android:icon="@drawable/first"
-        android:title="Все"/>
+        android:title="@string/bnv_all"/>
 
     <item android:id="@+id/notes"
         android:icon="@drawable/notes"

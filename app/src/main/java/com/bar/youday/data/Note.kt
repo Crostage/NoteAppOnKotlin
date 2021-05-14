@@ -2,7 +2,6 @@ package com.bar.youday.data
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.bar.youday.helper.NoteHelper
@@ -13,7 +12,6 @@ data class Note(
     var title: String = "",
     var text: String = "",
     var type: Int = 0,
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var image: ByteArray? = null,
     var date: String = NoteHelper.convertDate(Date())
 ) : Parcelable {
@@ -41,6 +39,30 @@ data class Note(
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Note
+
+        if (title != other.title) return false
+        if (text != other.text) return false
+        if (type != other.type) return false
+        if (date != other.date) return false
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = title.hashCode()
+        result = 31 * result + text.hashCode()
+        result = 31 * result + type
+        result = 31 * result + date.hashCode()
+        result = 31 * result + id
+        return result
     }
 
     companion object CREATOR : Parcelable.Creator<Note> {

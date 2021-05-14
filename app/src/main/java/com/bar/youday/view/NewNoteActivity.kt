@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -14,6 +13,7 @@ import com.bar.youday.R
 import com.bar.youday.data.Note
 import com.bar.youday.data.NoteDatabase
 import com.bar.youday.data.repository.NotesRepositoryImp
+import com.bar.youday.helper.Constant
 import com.bar.youday.viewmodel.NotesViewModel
 import com.bar.youday.viewmodel.NotesViewModelFactory
 import kotlinx.android.synthetic.main.activity_new_note.*
@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream
 
 class NewNoteActivity : AppCompatActivity() {
 
-    private val RESULT_LOAD_IMG = 1
     private lateinit var notesViewModel: NotesViewModel
     private var pointFlag = false
     var imageByteArray: ByteArray? = null
@@ -37,8 +36,8 @@ class NewNoteActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.newNoteBar))
 
 
-        if (intent.hasExtra("note")) {
-            note = intent.getParcelableExtra<Note>(("note"))!!
+        if (intent.hasExtra(Constant.NOTE_EXTRA)) {
+            note = intent.getParcelableExtra((Constant.NOTE_EXTRA))!!
             note?.let {
                 titleNote.setText(it.title)
                 textNote.setText(it.text)
@@ -102,7 +101,7 @@ class NewNoteActivity : AppCompatActivity() {
             R.id.clipTool -> {
                 val photoPickerIntent = Intent(Intent.ACTION_PICK)
                 photoPickerIntent.type = "image/*"
-                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG)
+                startActivityForResult(photoPickerIntent, Constant.LOAD_IMG_RESULT)
             }
             R.id.saveButton -> {
                 addNote()
@@ -114,15 +113,15 @@ class NewNoteActivity : AppCompatActivity() {
     }
 
     private fun addNote() {
-        val note1 = newNote()
+        val note = newNote()
 
-        if (note1.title.isEmpty() || note1.text.isEmpty()) {
-            Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+        if (note.title.isEmpty() || note.text.isEmpty()) {
+            Toast.makeText(this, R.string.Toast_attention_message, Toast.LENGTH_SHORT).show()
             return
         }
 
         val returnIntent = Intent()
-        returnIntent.putExtra("result", note1)
+        returnIntent.putExtra(Constant.INTENT_RESULT, note)
         setResult(RESULT_OK, returnIntent)
         finish()
     }
@@ -153,7 +152,7 @@ class NewNoteActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK) {
+        if (requestCode == Constant.LOAD_IMG_RESULT && resultCode == RESULT_OK) {
             val uri = data?.data
             val impStr = uri?.let { contentResolver.openInputStream(it) }
             val stream = ByteArrayOutputStream()
