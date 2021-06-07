@@ -1,14 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.AllNotesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_weight="1"
+        android:id="@+id/recyclerViewNote"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/colorQuickActionsBackground"
+        android:layoutMode="clipBounds"
+        tools:listitem="@layout/note_item" />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/all"
+            android:icon="@drawable/first"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"/>
+        <Button
+            android:id="@+id/notes"
+            android:icon="@drawable/notes"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"/>
+        <Button
+            android:id="@+id/shop"
+            android:icon="@drawable/shopping"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"/>
+        <Button
+            android:id="@+id/plans"
+            android:icon="@drawable/pencil"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonNewNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="28dp"
+        android:contentDescription="@string/float_b_discr"
+        android:src="@drawable/plus" />
+
+
+</RelativeLayout>

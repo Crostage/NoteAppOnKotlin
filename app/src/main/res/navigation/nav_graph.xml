@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/allNotesFragment">
+    <fragment
+        android:id="@+id/allNotesFragment"
+        android:name="com.bar.youday.view.AllNotesFragment"
+        android:label="fragment_all_notes"
+        tools:layout="@layout/fragment_all_notes" >
+        <action
+            android:id="@+id/action_allNotesFragment_to_newNoteFragment"
+            app:destination="@id/newNoteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newNoteFragment"
+        android:name="com.bar.youday.view.NewNoteFragment"
+        android:label="fragment_new_note"
+        tools:layout="@layout/fragment_new_note" >
+        <action
+            android:id="@+id/action_newNoteFragment_to_allNotesFragment"
+            app:destination="@id/allNotesFragment" />
+    </fragment>
 </navigation>

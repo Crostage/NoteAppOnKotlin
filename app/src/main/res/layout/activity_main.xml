@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,34 +7,14 @@
     android:orientation="vertical"
     tools:context=".view.MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewNote"
-        android:background="@color/colorQuickActionsBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layoutMode="clipBounds"
-        tools:listitem="@layout/note_item" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonNewNote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/navigation"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        android:contentDescription="@string/float_b_discr"
-        android:onClick="addNote"
-        android:src="@drawable/plus" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:itemTextColor="@color/mainTextColor"
-        android:background="@color/purple_500"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/notes_menu" />
-
-</RelativeLayout>
+</FrameLayout>
