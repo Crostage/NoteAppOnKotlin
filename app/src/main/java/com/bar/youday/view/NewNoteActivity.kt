@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_new_note.*
 import java.io.ByteArrayOutputStream
 
 
-class NewNoteActivity : AppCompatActivity(),Sebkabl {
+class NewNoteActivity : AppCompatActivity() {
 
     private lateinit var notesViewModel: NotesViewModel
     private var pointFlag = false
@@ -56,7 +56,6 @@ class NewNoteActivity : AppCompatActivity(),Sebkabl {
             }
 
         }
-
 
         val repository = NotesRepositoryImp.get()
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
@@ -141,7 +140,7 @@ class NewNoteActivity : AppCompatActivity(),Sebkabl {
         note?.let { n ->
 
             newNote.id = n.id
-            go(5)
+
 
         }
 
@@ -150,7 +149,6 @@ class NewNoteActivity : AppCompatActivity(),Sebkabl {
         }
         return newNote
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -166,19 +164,7 @@ class NewNoteActivity : AppCompatActivity(),Sebkabl {
         }
     }
 
-    fun addNote(view: View) {}
 
 
 }
 
-interface Sebkabl {
-    fun go(int: Int): Int {
-        return int*2
-    }
-
-    companion object{
-        fun stop(double: Double): Double{
-            return double*0
-        }
-    }
-}

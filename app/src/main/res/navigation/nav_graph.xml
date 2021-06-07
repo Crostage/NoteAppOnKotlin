@@ -8,7 +8,7 @@
         android:id="@+id/allNotesFragment"
         android:name="com.bar.youday.view.AllNotesFragment"
         android:label="fragment_all_notes"
-        tools:layout="@layout/fragment_all_notes" >
+        tools:layout="@layout/fragment_all_notes">
         <action
             android:id="@+id/action_allNotesFragment_to_newNoteFragment"
             app:destination="@id/newNoteFragment" />
@@ -17,9 +17,16 @@
         android:id="@+id/newNoteFragment"
         android:name="com.bar.youday.view.NewNoteFragment"
         android:label="fragment_new_note"
-        tools:layout="@layout/fragment_new_note" >
+        tools:layout="@layout/fragment_new_note">
         <action
             android:id="@+id/action_newNoteFragment_to_allNotesFragment"
             app:destination="@id/allNotesFragment" />
+        <action
+            android:id="@+id/action_newNoteFragment_pop_including_allNotesFragment"
+            app:popUpTo="@id/allNotesFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="argNote"
+            app:argType="com.bar.youday.data.Note" />
     </fragment>
 </navigation>

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -34,7 +35,6 @@ interface OnItemClick {
 }
 
 class AllNotesFragment : Fragment(), OnItemClick {
-
 
 
     private lateinit var navController: NavController
@@ -78,12 +78,7 @@ class AllNotesFragment : Fragment(), OnItemClick {
         onSwipeListener()
         Log.i("resume", "create")
 
-//        navigation.itemIconTintList = null
-//        navigation.setOnNavigationItemSelectedListener { item ->
-//            typeChoicer(item.itemId)
-//
-//            true
-//        }
+
     }
 
     private fun onSwipeListener() {
@@ -203,9 +198,8 @@ class AllNotesFragment : Fragment(), OnItemClick {
     }
 
     override fun onClick(note: Note) {
-//        val intent = Intent(this, NewNoteActivity::class.java)
-//        intent.putExtra( Constant.NOTE_EXTRA,note)
-//        startActivityForResult(intent, Constant.REQUEST_RESULT)
+        val bundle = bundleOf("argNote" to note)
+        navController?.navigate(R.id.action_allNotesFragment_to_newNoteFragment, bundle)
     }
 
 
