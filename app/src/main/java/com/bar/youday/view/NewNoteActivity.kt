@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.bar.youday.R
 import com.bar.youday.data.Note
-import com.bar.youday.data.NoteDatabase
 import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.helper.Constant
 import com.bar.youday.viewmodel.NotesViewModel
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_new_note.*
 import java.io.ByteArrayOutputStream
 
 
-class NewNoteActivity : AppCompatActivity() {
+class NewNoteActivity : AppCompatActivity(),Sebkabl {
 
     private lateinit var notesViewModel: NotesViewModel
     private var pointFlag = false
@@ -57,8 +56,8 @@ class NewNoteActivity : AppCompatActivity() {
 
         }
 
-        val dao = NoteDatabase.invoke(this).notesDao()
-        val repository = NotesRepositoryImp(dao)
+
+        val repository = NotesRepositoryImp.get()
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
 
     }
@@ -141,6 +140,8 @@ class NewNoteActivity : AppCompatActivity() {
         note?.let { n ->
 
             newNote.id = n.id
+            go(5)
+
         }
 
         imageByteArray?.let {
@@ -165,4 +166,16 @@ class NewNoteActivity : AppCompatActivity() {
     }
 
 
+}
+
+interface Sebkabl {
+    fun go(int: Int): Int {
+        return int*2
+    }
+
+    companion object{
+        fun stop(double: Double): Double{
+            return double*0
+        }
+    }
 }

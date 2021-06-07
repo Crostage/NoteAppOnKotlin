@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bar.youday.R
 import com.bar.youday.adapter.NoteAdapter
 import com.bar.youday.data.Note
-import com.bar.youday.data.NoteDatabase
 import com.bar.youday.data.NotesDao
 import com.bar.youday.data.repository.NotesRepositoryImp
 import com.bar.youday.helper.Constant
@@ -32,10 +32,10 @@ interface OnItemClick {
     fun onClick(note: Note)
 }
 
+
+
 class MainActivity : AppCompatActivity(), OnItemClick {
     //todo сделать плвный приятный дизайн по типу как на самсунг
-
-
 
 
     private lateinit var dao: NotesDao
@@ -43,11 +43,10 @@ class MainActivity : AppCompatActivity(), OnItemClick {
     private lateinit var adapter: NoteAdapter
     private lateinit var repository: NotesRepositoryImp
     private lateinit var deleteIcon: Drawable
-    private var swipeBackground: ColorDrawable = ColorDrawable(
-        Color
-            .parseColor("#FF0000")
-    )
 
+    private var swipeBackground: ColorDrawable = ColorDrawable(
+        Color.parseColor("#FF0000")
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +54,7 @@ class MainActivity : AppCompatActivity(), OnItemClick {
         setContentView(R.layout.activity_main)
 
         deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete)!!
-        dao = NoteDatabase.invoke(this).notesDao()
-        repository = NotesRepositoryImp(dao)
+        repository = NotesRepositoryImp.get()
         notesViewModel = NotesViewModelFactory(repository).create(NotesViewModel::class.java)
         adapter = NoteAdapter(this)
         recyclerViewNote.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
@@ -73,7 +71,11 @@ class MainActivity : AppCompatActivity(), OnItemClick {
             true
         }
 
+
+
     }
+
+
 
     private fun onSwipeListener() {
         val itemTouchHelperCallback =
@@ -194,12 +196,12 @@ class MainActivity : AppCompatActivity(), OnItemClick {
 
     fun addNote(view: View) {
         val intent = Intent(this, NewNoteActivity::class.java)
-        startActivityForResult(intent, Constant.REQUEST_RESULT)
+        startActivityForResult(intent, 1)
     }
 
     override fun onClick(note: Note) {
         val intent = Intent(this, NewNoteActivity::class.java)
-        intent.putExtra(Constant.NOTE_EXTRA, note)
+        intent.putExtra( Constant.NOTE_EXTRA,note)
         startActivityForResult(intent, Constant.REQUEST_RESULT)
     }
 
@@ -212,4 +214,5 @@ class MainActivity : AppCompatActivity(), OnItemClick {
             }
         }
     }
+
 }

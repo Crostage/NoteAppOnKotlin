@@ -10,6 +10,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewNote"
+        android:background="@color/colorQuickActionsBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutMode="clipBounds"
@@ -32,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemTextColor="@color/mainTextColor"
+        android:background="@color/purple_500"
         android:layout_alignParentBottom="true"
         app:menu="@menu/notes_menu" />
 

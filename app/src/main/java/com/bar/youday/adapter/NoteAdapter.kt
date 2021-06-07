@@ -21,6 +21,7 @@ class NoteAdapter(private val callback: OnItemClick) : RecyclerView.Adapter<Note
             val diffResult = DiffUtil.calculateDiff(diffUtil)
             field = value
             diffResult.dispatchUpdatesTo(this)
+
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
@@ -67,3 +68,4 @@ class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 }
+
